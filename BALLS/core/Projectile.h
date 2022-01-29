@@ -2,6 +2,11 @@
 
 #include "Vector3.h"
 
+# THINGS TO DO
+# QUATERNIONS
+# MOMENT OF INERTIA
+# WORLD AND LOCAL SPACES
+
 class Projectile {
 
 public:
