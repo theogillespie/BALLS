@@ -6,3 +6,4 @@
 #define Tb 273.15 // temp at sea level (k)
 #define Lb -0.0065 // standard temp lapse rate (K/m)
 #define h 0.0 // sea level height (m)
+#define re 6371.009 // mean radius of earth
