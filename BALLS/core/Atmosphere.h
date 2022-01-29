@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Constants.h"
+#include "Vector3.h"
 
-#include <LinearMath/btVector3.h>
 #include <cmath>
 #include <random>
 
@@ -19,11 +19,11 @@ private:
 
 public:
 
-	static btVector3 generateWind(double maxSpeed) {
+	static Vector3 generateWind(double maxSpeed) {
 
-		double x = Atmosphere::windDistribution(2.0, maxSpeed);
-		double y = Atmosphere::windDistribution(2.0, maxSpeed);
-		return btVector3(x, y, 0.0);
+		double const x = Atmosphere::windDistribution(2.0, maxSpeed);
+		double const y = Atmosphere::windDistribution(2.0, maxSpeed);
+		return new Vector3(x, y, 0.0);
 	}
 
 	static double pressureAtAltitude(double alt) {

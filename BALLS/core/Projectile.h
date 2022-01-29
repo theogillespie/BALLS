@@ -2,48 +2,48 @@
 
 #include<vector>
 
-#include "btBulletDynamicsCommon.h"
-#include "LinearMath/btVector3.h"
-#include "LinearMath/btTransformUtil.h"
-
-#include "Misc.h"
+#include "Vector3.h"
 #include "Effects.h
-
-using namespace std;
-
 
 class Projectile {
 
 public:
 
-	vector<Effect> effects;
-	btRigidbody rb;
+	std::vector<Effect> effects;
 
-	Projectile(double mass, btVector3 dimensions, btVector3 position=btVector3(0,0,0)) {
+	Vector3 acceleration;
+	Vector3 position;
+	Vector3 velocity;
+	Vector3 forces;
 
-		btEmptyShape* shape = new btEmptyShape();
+	double dt;
+	double elaspedTime;
+	double mass;
+	
+	Projectile(Vector3 const& initalPosition) {
 
-		btTransform transform;
-		transform.setIdentity();
-		transform.setOrigin(vecZero());
+	};
 
-		btVector3 localIntertia = vecZero();
-		btDefaultMotionState* state = new btDefaultMotionState(transform);
-
-		btRigidBody::btRigidBodyConstructionInfo cInfo(mass, state, shape, localInertia);
-
-		rb = new btRigidbody(cInfo);
-	}
-
-	~Projectile() {}
+	~Projectile() {
+		this->effects.clear();
+	};
 
 	void addEffect(Effect effect) {
-		effects.push_back(effect);
+		this->effects.push_back(effect);
+	};
+
+	double kineticEnergy() {
+		return .5 * this->mass * (this.velocity * this.velocity);
 	}
 
 	void update() {
-		for (byte i = 0; i < effects.size(); i++) {
-			effects[i].update();
+
+		for (uint8_t i = 0; i < this->effects.size(); i++) {
+			this->effects[i].update();
 		}
+
+		this->acceleration = this->forces / this->mass;
+		this->position = this->velocity * this->dt + 0.5 * this->acceleration * (this->dt * this->dt);
+		this->velocity = this->acceleration.x * this->dt;
 	}
 };
