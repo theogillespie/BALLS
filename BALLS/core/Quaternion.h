@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector3.h"
+#include "Constants.h"
 #include <cmath>
 
 class Quaternion {
@@ -60,7 +61,23 @@ public:
 	};
 
 	Vector3 toEulerAngles() {
-		return NULL;
+		Vector3 angles;
+		double n1 = 2.0 * (this->w * this->x + this->y * this->z);
+		double n2 = 1.0 - (2.0 * (this->x * this->x + this.y * this.y));
+		double n3 = 2.0 * (this->w * this->y + this->x * -this->z);
+		double n4 = 2.0 * (this->w * this->z + this->x * this->y);
+		double n5 = 1.0 - (2.0 * (this->y * this->y + this->z * this->z));
+
+		angles.x = atan2(n4, n5);
+		if (abs(n3) >= 1.0) {
+			angles.y = copysign(HALFPI, n3);
+		}
+		else {
+			angles.y = asin(n3);
+		}
+		angles.z = atan2(n1, n2);
+
+		return angles;
 	}
 
 	//awesome website:  https://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/arithmetic/index.htm
