@@ -35,7 +35,7 @@ public:
 		return sqrt((this->x * this->x) + (this->y * this->y) + (this->z * this->z));
 	};
 
-	void normal() {
+	void invert() {
 		this.x = -this.x;
 		this.y = -this.y;
 		this.z = -this.z;
