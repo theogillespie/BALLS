@@ -4,6 +4,8 @@
 #include "Constants.h"
 #include <cmath>
 
+//at operator overflows for Vector3
+
 class Quaternion {
 public: 
 
