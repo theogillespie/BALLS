@@ -13,7 +13,7 @@
 int main()
 {
 
-	/* un comment to test quaternion conversion (broken)
+	/* un comment to test quaternion conversion (broken)W
 	Vector3 vec(90, 90, 90);
 	vec.toRad();
 	Quaternion a = Quaternion::fromEuler(vec);

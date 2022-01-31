@@ -3,6 +3,7 @@
 #include "Projectile.h"
 #include "Constants.h"
 #include "Vector3.h"
+#include "Logger.h"
 
 #include <cmath>
 
@@ -10,9 +11,10 @@ class Effect {
 public:
 
 	Projectile* projectile;
+	Logger logger;
 
-	Effect(Projectile* _projectile) {
-		this->projectile = _projectile;
+	Effect(Projectile _projectile) {
+		this->projectile = &_projectile;
 	};
 
 	virtual void update();

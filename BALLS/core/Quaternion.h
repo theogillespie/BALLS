@@ -2,7 +2,10 @@
 
 #include "Vector3.h"
 #include "Constants.h"
+
 #include <cmath>
+#include <sstream>
+#include <string>
 
 class Quaternion {
 public: 
@@ -79,9 +82,9 @@ public:
 	}
 
 	std::string toString() {
-		char buffer[100];
-		std::sprintf(buffer, "w: %f, x: %f, y: %f, z: %f", this->w, this->x, this->y, this->z);
-		return buffer;
+		std::ostringstream os;
+		os << "w: " << this->w << ", x: " << this->x << ", y : " << this->y << ", z : " << this->z;
+		return os.str();
 	};
 
 	//awesome website:  https://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/arithmetic/index.htm

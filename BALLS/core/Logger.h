@@ -3,6 +3,7 @@
 #include "Vector3.h"
 
 #include<vector>
+#include<string>
 
 enum LOGMODE : uint8_t {
 	SCALAR = 0,
@@ -23,14 +24,18 @@ private:
 
 public:
 
-	Logger(double* number) {
+	std::string name;
+
+	Logger(std::string loggerName, double* number) {
+		this->name = loggerName;
 		this->scalarValue = number;
-		this->mode = LOGMODE.SCALAR;
+		this->mode = SCALAR;
 	};
 
-	Logger(Vector3* vec) {
+	Logger(std::string loggerName, Vector3* vec) {
+		this->name = loggerName;
 		this->vectorValue = vec;
-		this->mode = LOGMODE.VECTOR;
+		this->mode = VECTOR;
 	};
 
 	~Logger() {
@@ -40,25 +45,21 @@ public:
 
 	void update() {
 		switch (this->mode) {
-			case LOGMODE.SCALAR:
-				this->scalarLogs.push_back(&this->scalarValue);
+			case SCALAR:
+				this->scalarLogs.push_back(*this->scalarValue);
 				break;
 			
-			case LOGMODE.VECTOR:
-				this->vectorLogs.push_back(&this->vectorValue);
+			case VECTOR:
+				this->vectorLogs.push_back(*this->vectorValue);
 				break;
 		}
 	};
 
-	double[] getData() {
-		double arr[this->scalarLogs.size()];
-		std::copy(this->scalarLogs.begin(), this->scalarLogs.end(), this.scalarLogs);
-		return arr;
+	std::vector<double> getData(LOGMODE type=SCALAR) { // kinda hacky but ok
+		return this->scalarLogs;
 	};
 
-	Vector3[] getData() {
-		Vector3 arr[this->vectorLogs.size()];
-		std::copy(this->vectorLogs.begin(), this->vectorLogs.end(), this.vectorLogs);
-		return arr;
-	}
+	std::vector<Vector3> getData() {
+		return this->vectorLogs;
+	};
 }

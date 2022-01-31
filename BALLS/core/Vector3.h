@@ -3,8 +3,9 @@
 #include"Constants.h"
 
 #include <cmath>
-#include <cstdio>
+
 #include <string>
+#include<sstream>
 
 class Vector3 {
 public:
@@ -63,9 +64,9 @@ public:
 	}
 
 	std::string toString() {
-		char buffer[50];
-		std::sprintf(buffer, "x: %f, y: %f, z: %f", this->x, this->y, this->z);
-		return buffer;
+		std::ostringstream os;
+		os << "x: " << this->x << ", y: " << this->y << ", z: " << this->z;
+		return os.str();
 	};
 
 	static double dot(Vector3 const& a, Vector3 const& b) {

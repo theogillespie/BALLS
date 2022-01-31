@@ -33,6 +33,8 @@ public:
 		this->position = initalPosition;
 	};
 
+	Projectile() {};
+
 	~Projectile() {
 		this->effects.clear();
 	};
