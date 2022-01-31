@@ -2,11 +2,24 @@
 //
 
 #include "BALLS.h"
+#include "core/Quaternion.h"
+#include "core/Vector3.h"
+#include "core/Projectile.h"
+#include "core/Effects.h"
 
-using namespace std;
+
+#include <stdio.h>
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+
+	/* un comment to test quaternion conversion (broken)
+	Vector3 vec(90, 90, 90);
+	vec.toRad();
+	Quaternion a = Quaternion::fromEuler(vec);
+	std::cout << a.toString() << std::endl;
+	std::cout << a.toEulerAngles().toDeg()->toString();
+
+	*/
 	return 0;
 }

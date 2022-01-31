@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Vector3.h"
+#include "Effects.h"
+#include "Projectile.h"
 
-# THINGS TO DO
-# QUATERNIONS
-# MOMENT OF INERTIA
-# WORLD AND LOCAL SPACES
+#include <vector>
+
 
 class Projectile {
 
@@ -25,9 +25,11 @@ public:
 	double dt;
 	double elaspedTime;
 	double mass;
+
+	std::vector<Effect> effects = std::vector<Effect>();
 	
 	
-	Projectile(double mass, double dt=0.001, Vector3 const& initalPosition=Vector3.zero()) {
+	Projectile(double mass, double dt=0.001, Vector3 const& initalPosition=Vector3::zero()) {
 		this->position = initalPosition;
 	};
 
@@ -40,7 +42,7 @@ public:
 	};
 
 	double kineticEnergy() {
-		return .5 * this->mass * (this.velocity * this.velocity);
+		return (this->velocity * this->velocity).magnitude() * .5 * this->mass;
 	}
 
 	double altitude() {
@@ -48,7 +50,7 @@ public:
 	}
 
 	void addForce(Vector3 const& force) {
-		this->addForce += force;
+		this->forces += force;
 	}
 
 	static Vector3 toLocalSpace(Vector3 vec) {
@@ -58,16 +60,16 @@ public:
 	void update() {
 
 		this->acceleration = this->forces / this->mass;
-		this->position = this->velocity * this->dt + 0.5 * this->acceleration * (this->dt * this->dt);
+		this->position = this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity = this->acceleration * this->dt;
 
 
 		//is this illegal?
 		this->angularAcceleration = this->torque / this->angularMass;
-		this->rotation = this->angularVelocity * this->dt + 0.5 * this->angularAcceleraion * (this->dt * this->dt);
+		this->rotation = this->angularVelocity * this->dt + this->angularAcceleration * 0.5 * (this->dt * this->dt);
 		this->angularVelocity = this->angularAcceleration * this->dt;
 
-		this->torque = Vector3.zero();
-		this->forces = Vector3.zero();
+		this->torque = Vector3::zero();
+		this->forces = Vector3::zero();
 	}
 };
