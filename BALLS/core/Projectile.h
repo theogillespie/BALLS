@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector3.h"
+#include "Quaternion.h"
 #include "Constants.h"
 #include "Logger.h"
 
