@@ -48,25 +48,21 @@ public:
 
 	double kineticEnergy() {
 		return (this->velocity * this->velocity).magnitude() * .5 * this->mass;
-	}
+	};
 
 	double altitude() {
 		return this->position.z;
-	}
+	};
 
 	void addForce(Vector3 const& force) {
 		this->forces += force;
-	}
+	};
 
 	static Vector3 toLocalSpace(Vector3 vec) {
 		
-	}
+	};
 
 	void update() {
-
-		for(unsigned int i = 0; i < this->effects.size(); i++) {
-			this->effects[i]->update();
-		}
 
 		this->acceleration = this->forces / this->mass;
 		this->position = this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
@@ -80,7 +76,7 @@ public:
 
 		this->torque = Vector3::zero();
 		this->forces = Vector3::zero();
-	}
+	};
 };
 
 class Effect {
@@ -100,14 +96,13 @@ public:
 
 	Gravity(Projectile proj) {
 		this->projectile = &proj;
-		Logger log("Gravity Acceleration", &this->projectile->acceleration.z);
+		Logger log("Gravity Acceleration", &this->projectile->acceleration.y);
 		this->logger = &log;
-	}
+	};
 
 	void update() {
 		double alt = this->projectile->altitude();
-		this->projectile->acceleration.z += G * pow((re / re + alt), 2.0);
-
+		this->projectile->acceleration.y += G * pow((re / re + alt), 2.0);
 		this->logger->update();
 	};
 };
