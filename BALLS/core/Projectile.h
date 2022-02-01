@@ -63,6 +63,10 @@ public:
 
 	void update() {
 
+		for(unsigned int i = 0; i < this->effects.size(); i++) {
+			this->effects[i]->update();
+		}
+
 		this->acceleration = this->forces / this->mass;
 		this->position = this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity = this->acceleration * this->dt;
@@ -95,10 +99,14 @@ public:
 
 	Gravity(Projectile proj) {
 		this->projectile = &proj;
+		Logger log("Gravity Acceleration", &this->projectile->acceleration.z);
+		this->logger = &log;
 	}
 
 	void update() {
 		double alt = this->projectile->altitude();
 		this->projectile->acceleration.z += G * pow((re / re + alt), 2.0);
+
+		this->logger->update();
 	};
 };
