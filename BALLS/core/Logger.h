@@ -38,6 +38,8 @@ public:
 		this->mode = VECTOR;
 	};
 
+	Logger() {}
+
 	~Logger() {
 		this->scalarLogs.clear();
 		this->vectorLogs.clear();
@@ -62,4 +64,4 @@ public:
 	std::vector<Vector3> getData() {
 		return this->vectorLogs;
 	};
-}
+};

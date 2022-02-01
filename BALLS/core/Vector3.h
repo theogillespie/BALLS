@@ -93,7 +93,7 @@ public:
 		return Vector3(this->x + n, this->y + n, this->z + n);
 	};
 
-	Vector3 operator += (Vector3 const& vec) {
+	Vector3& operator += (Vector3 const& vec) {
 		this->x += vec.x;
 		this->y += vec.y;
 		this->z += vec.z;

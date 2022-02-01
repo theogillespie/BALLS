@@ -5,8 +5,6 @@
 #include "core/Quaternion.h"
 #include "core/Vector3.h"
 #include "core/Projectile.h"
-#include "core/Effects.h"
-
 
 #include <stdio.h>
 
@@ -21,5 +19,6 @@ int main()
 	std::cout << a.toEulerAngles().toDeg()->toString();
 
 	*/
+	printf("hi!");
 	return 0;
 }

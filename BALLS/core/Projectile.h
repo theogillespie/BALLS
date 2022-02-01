@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Vector3.h"
-#include "Effects.h"
-#include "Projectile.h"
+#include "Constants.h"
+#include "Logger.h"
 
 #include <vector>
+#include <cmath>
 
+class Effect;
 
 class Projectile {
 
@@ -26,7 +28,7 @@ public:
 	double elaspedTime;
 	double mass;
 
-	std::vector<Effect> effects = std::vector<Effect>();
+	std::vector<Effect*> effects = std::vector<Effect*>();
 	
 	
 	Projectile(double mass, double dt=0.001, Vector3 const& initalPosition=Vector3::zero()) {
@@ -39,7 +41,7 @@ public:
 		this->effects.clear();
 	};
 
-	void addEffect(Effect effect) {
+	void addEffect(Effect* effect) {
 		this->effects.push_back(effect);
 	};
 
@@ -74,4 +76,29 @@ public:
 		this->torque = Vector3::zero();
 		this->forces = Vector3::zero();
 	}
+};
+
+class Effect {
+public:
+
+	Projectile* projectile;
+	Logger* logger;
+
+	Effect() {}
+
+	virtual void update();
+};
+
+class Gravity : Effect {
+
+public:
+
+	Gravity(Projectile proj) {
+		this->projectile = &proj;
+	}
+
+	void update() {
+		double alt = this->projectile->altitude();
+		this->projectile->acceleration.z += G * pow((re / re + alt), 2.0);
+	};
 };
