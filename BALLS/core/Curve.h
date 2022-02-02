@@ -39,6 +39,8 @@ struct Curve {
         this->xMax = &this->x[this->x.size()-1];
     };
 
+    Curve() {};
+
     static Curve fromFile(std::string path) {
         CurveReader cr(path);
         vector<double> x;

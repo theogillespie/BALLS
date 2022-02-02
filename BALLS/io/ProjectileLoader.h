@@ -26,6 +26,10 @@ struct ProjectileConfigField {
     string name;
     string valueS;
     double valueD;
+
+    ProjectileConfigField(string label) {
+        this->name = label;
+    }
 };
 
 class ProjectileLoader {
@@ -37,7 +41,6 @@ public:
 
     ProjectileLoader(string filepath, vector<ProjectileConfigField*> configFields) {
         cr = ConfigReader(filepath);
-
         this->fields = configFields;
     };
     

@@ -4,15 +4,21 @@
 #include "Quaternion.h"
 #include "Constants.h"
 #include "Logger.h"
+#include "Curve.h"
+
+#include "../io/ProjectileLoader.h"
 
 #include <vector>
 #include <cmath>
+#include <string>
 
 class Effect;
 
 class Projectile {
 
 public:
+
+	string name;
 
 	Vector3 acceleration;
 	Vector3 position;
@@ -24,6 +30,8 @@ public:
 	Vector3 angularAcceleration;
 	Vector3 torque;
 	Vector3 angularMass;
+
+	Curve drag;
 
 	double dt;
 	double elaspedTime;
@@ -40,6 +48,28 @@ public:
 
 	~Projectile() {
 		this->effects.clear();
+	};
+
+	static Projectile fromFile(std::string filepath) {
+		ProjectileConfigField name("name");
+		ProjectileConfigField mass("mass");
+		ProjectileConfigField cdFile("cd");
+
+		vector<ProjectileConfigField*> fields {&mass, &cdFile};
+		ProjectileLoader pl(filepath, fields);
+
+		pl.load();
+
+		CurveReader cr(cdFile.valueS);
+		vector<double> x, y;
+		cr.parse(&x, &y);
+
+		Curve drag(x, y);
+		Projectile proj(mass.valueD);
+		proj.drag = drag;
+		proj.name = name.valueS;
+
+		return proj;
 	};
 
 	void addEffect(Effect* effect) {
