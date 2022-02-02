@@ -2,8 +2,8 @@
 
 #include <string>
 #include <fstream>
+#include <vector>
 
-#include "../core/Curve.h"
 #include "ConfigReader.h"
 
 using namespace std;
@@ -14,14 +14,16 @@ using namespace std;
 class CurveReader {
     public: 
         string filePath;
+
         CurveReader(string filepath) {
             this->filePath = filepath;
         };
+
+        CurveReader() {};
         
         //should probbaly have error checking
-        void parse(Curve* curve) {
+        void parse(vector<double> *x, vector<double> *y) {
             ifstream ifs(this->filePath, ifstream::in);
-
             string line;
             while (getline(ifs, line)) {
                 if (line.empty()) {
@@ -38,8 +40,8 @@ class CurveReader {
                 ConfigReader::removeStringWhitespace(&xs);
                 ConfigReader::removeStringWhitespace(&ys);
 
-                curve->x.push_back(configElement::toNumber(xs));
-                curve->y.push_back(configElement::toNumber(ys));
+                x->push_back(configElement::toNumber(xs));
+                y->push_back(configElement::toNumber(ys));
             }
         };
 

@@ -1,9 +1,11 @@
 #pragma once
 
 #include "Interpolation.h"
+#include "../io/CurveReader.h"
 
 #include<vector>
 #include<algorithm>
+#include <string>
 
 double vectorIncludes(std::vector<double>* vec, double n) {
     auto i = std::find(vec->begin(), vec->end(), n);
@@ -36,6 +38,14 @@ struct Curve {
         this->xMin = &this->x[0];
         this->xMax = &this->x[this->x.size()-1];
     };
+
+    static Curve fromFile(std::string path) {
+        CurveReader cr(path);
+        vector<double> x;
+        vector<double> y;
+        cr.parse(&x, &y);
+        return Curve(x, y);
+    }
 
     // uses interpolation
     double getValue(double _x) {
