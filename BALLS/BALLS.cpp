@@ -6,6 +6,8 @@
 #include "core/Vector3.h"
 #include "core/Projectile.h"
 
+#include "io/ConfigReader.h"
+
 #include <stdio.h>
 
 int main()
@@ -17,8 +19,14 @@ int main()
 	Quaternion a = Quaternion::fromEuler(vec);
 	std::cout << a.toString() << std::endl;
 	std::cout << a.toEulerAngles().toDeg()->toString();
-
 	*/
+
+	ConfigReader cf("C:\\Users\\icat7\\OneDrive\\Documents\\BALLS\\BALLS\\io\\ConfigTest.txt");
+	cf.parse();
+
+	cout << cf.elements[0].getString() << endl;
+	cout << cf.elements[1].getString() << endl;
+
 	printf("hi!");
 	return 0;
 }

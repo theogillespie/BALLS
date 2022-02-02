@@ -19,4 +19,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Xsd Include="io\ConfigTest.txt">
+      <Filter>Header Files</Filter>
+    </Xsd>
+  </ItemGroup>
 </Project>

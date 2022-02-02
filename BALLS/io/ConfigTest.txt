@@ -1,0 +1,5 @@
+
+# mass of object!
+mass=1
+# location of csv containing profile drag
+file=hi
