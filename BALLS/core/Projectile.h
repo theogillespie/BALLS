@@ -64,6 +64,8 @@ public:
 		vector<double> x, y;
 		cr.parse(&x, &y);
 
+		cout << "parsed curve";
+
 		Curve drag(x, y);
 		Projectile proj(mass.valueD);
 		proj.drag = drag;

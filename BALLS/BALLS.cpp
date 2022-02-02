@@ -15,8 +15,7 @@
 int main()
 {
 
-	
+	// technically executes, but values are not correct... probably a pointer issue;
 	Projectile proj = Projectile::fromFile("/workspace/BALLS/BALLS/io/ConfigTest.txt");
-	cout << proj.name;
 	return 0;
 }
