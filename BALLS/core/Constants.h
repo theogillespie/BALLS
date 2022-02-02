@@ -1,6 +1,6 @@
 
 #define G 9.80665 //m/s
-#define R 8.3144598 // J/(mol·K)
+#define R 8.3144598 // J/(mol/K)
 #define M 0.0289644 // air molarity kg/mol
 #define Pb 101325 // Pressure at sea level (Pa)
 #define Tb 273.15 // temp at sea level (k)
@@ -10,6 +10,7 @@
 
 // math things
 #define PI 3.141592653589793238462643383279502884L
+#define THETA PI*2UL
 #define HALFPI PI/2UL
 #define DEGTORAD PI/180UL
 #define RADTODEG 180UL/PI

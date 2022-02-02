@@ -44,13 +44,13 @@ public:
 
 	// fix euler to angle assignment (this prob needs to be done to toEuelrAngles as well) (w->x, y->z) but the math works!
 	static Quaternion fromEuler(Vector3 const& eulerAngles) {
-		double cosX = cos(eulerAngles.x / 2.0); // roll (to be fix)
-		double cosY = cos(eulerAngles.y / 2.0); // yaw
-		double cosZ = cos(eulerAngles.z / 2.0);  //pitch
+		double cosX = cos(eulerAngles.y / 2.0); 
+		double cosY = cos(eulerAngles.z / 2.0); 
+		double cosZ = cos(eulerAngles.x / 2.0);  
 
-		double sinX = sin(eulerAngles.x / 2.0);
-		double sinY = sin(eulerAngles.y / 2.0);
-		double sinZ = sin(eulerAngles.z / 2.0);
+		double sinX = sin(eulerAngles.y / 2.0);
+		double sinY = sin(eulerAngles.z / 2.0);
+		double sinZ = sin(eulerAngles.x / 2.0);
 
 		double w = cosX * cosY * cosZ + sinX * sinY * sinZ;
 		double x = cosX * cosY * sinZ - sinX * sinY * cosZ;
@@ -60,6 +60,7 @@ public:
 		return Quaternion(w, x, y, z);
 	};
 
+	//THIS IS SUPER WRONG>>>>>>>>>>>>>>>>>>>>>>>>>>>> NEED TO UPATE ASSOCIATIon
 	Vector3 toEulerAngles() {
 		Vector3 angles;
 
