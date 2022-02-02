@@ -7,6 +7,7 @@
 #include "core/Projectile.h"
 
 #include "io/ConfigReader.h"
+#include "io/LoadingBar.h"
 
 #include <stdio.h>
 
@@ -21,12 +22,10 @@ int main()
 	std::cout << a.toEulerAngles().toDeg()->toString();
 	*/
 
-	ConfigReader cf("C:\\Users\\icat7\\OneDrive\\Documents\\BALLS\\BALLS\\io\\ConfigTest.txt");
+	ConfigReader cf("/workspace/BALLS/BALLS/io/ConfigTest.txt");
 	cf.parse();
-
 	cout << cf.elements[0].getString() << endl;
 	cout << cf.elements[1].getString() << endl;
 
-	printf("hi!");
 	return 0;
 }

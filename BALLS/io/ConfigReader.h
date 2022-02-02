@@ -1,8 +1,12 @@
 #pragma once
 
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <fstream>
+#include <cctype>
+#include <stdlib.h>
+#include <iostream>
 
 using namespace std;
 
@@ -20,9 +24,23 @@ struct configElement {
     
     string getString() {
         ostringstream os;
-        os << this->name << " : " << this->value;
+        os << this->name << ":" << this->value;
         return os.str();
+    };
+
+    static bool isNumber(string val) {
+        for (unsigned int i = 0; i < val.size(); i++) {
+            char c = val.at(i);
+            if (isdigit(c) == 0)  {
+                return false;
+            }
+        }
+        return true;
     }
+
+    static double toNumber(string val) {
+        return stod(val);
+    };
 };
 
 class ConfigParseError : public exception
@@ -34,7 +52,6 @@ public:
 
     ConfigParseError(string file, unsigned int lineNumber) {
         this->description = descriptionBase + "(" + file + ", line: " + to_string(lineNumber) + ")";
-
     };
 
     const char* what()
@@ -52,6 +69,13 @@ public:
 
     ConfigReader(string location) {
         this->filePath = location;
+    };
+
+    ConfigReader() {}
+    
+
+    static void removeStringWhitespace(string* str) {
+        str->erase(remove_if(str->begin(), str->end(), ::isspace), str->end());
     };
 
     vector<configElement>* parse() {
@@ -79,6 +103,10 @@ public:
                 configElement element;
                 element.name = line.substr(0, line.find("="));
                 element.value = line.substr(line.find("=")+1, line.length());
+
+                ConfigReader::removeStringWhitespace(&element.name);
+                ConfigReader::removeStringWhitespace(&element.value);
+
                 this->elements.push_back(element);
 
             } catch (const std::exception& e) {
