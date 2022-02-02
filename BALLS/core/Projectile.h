@@ -69,7 +69,7 @@ public:
 		this->velocity = this->acceleration * this->dt;
 
 
-		//is this illegal?
+		
 		this->angularAcceleration = this->torque / this->angularMass;
 		this->rotation = this->angularVelocity * this->dt + this->angularAcceleration * 0.5 * (this->dt * this->dt);
 		this->angularVelocity = this->angularAcceleration * this->dt;
