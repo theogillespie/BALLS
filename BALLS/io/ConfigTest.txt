@@ -1,5 +1,5 @@
-
-# mass of object!
-mass=1
+name=G1
+# mass of object (kg)
+mass=10
 # location of csv containing profile drag
-file=hi
+cd=/workspace/BALLS/BALLS/io/CurveTest.txt

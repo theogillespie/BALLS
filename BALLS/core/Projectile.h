@@ -5,8 +5,8 @@
 #include "Constants.h"
 #include "Logger.h"
 #include "Curve.h"
-
 #include "../io/ProjectileLoader.h"
+#include "../io/CurveReader.h"
 
 #include <vector>
 #include <cmath>
@@ -98,8 +98,6 @@ public:
 		this->position = this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity = this->acceleration * this->dt;
 
-
-		
 		this->angularAcceleration = this->torque / this->angularMass;
 		this->rotation = this->angularVelocity * this->dt + this->angularAcceleration * 0.5 * (this->dt * this->dt);
 		this->angularVelocity = this->angularAcceleration * this->dt;
