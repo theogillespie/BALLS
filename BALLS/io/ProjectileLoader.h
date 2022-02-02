@@ -48,7 +48,7 @@ public:
         try {
             cr.parse();
         } catch(const std::exception& e) {
-            throw &"Error while loading projectile configuration: " [ *e.what()];
+            cout << "Error while loading projectile configuration: " + *e.what();
         }
 
         for(int i = 0; i < cr.elements.size(); i++) {
@@ -65,7 +65,7 @@ public:
                }
            }
            if(!found) {
-               throw FieldMissingError(element.name).what();
+               cout << FieldMissingError(element.name).what();
            }
         }
     }

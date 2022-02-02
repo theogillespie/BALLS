@@ -1,6 +1,6 @@
 echo Compiling....
 
-g++ BALLS/BALLS.cpp -o build/balls
+g++ BALLS/BALLS.cpp -Wno-return-type -o  build/balls
 
 echo Running BALLS.... 
 

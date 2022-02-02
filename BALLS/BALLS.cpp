@@ -8,6 +8,7 @@
 
 #include "io/ConfigReader.h"
 #include "io/LoadingBar.h"
+#include "io/ProjectileLoader.h"
 
 #include <stdio.h>
 
@@ -15,20 +16,7 @@ int main()
 {
 
 	
-	Vector3 vec(90, 90, 90);
-	vec.toRad();
-	Quaternion a = Quaternion::fromEuler(vec);
-	std::cout << a.toString() << std::endl;
-	std::cout << a.toEulerAngles().toDeg()->toString();
-	
-
-	
-	/*
-	ConfigReader cf("/workspace/BALLS/BALLS/io/ConfigTest.txt");
-	cf.parse();
-	cout << cf.elements[0].getString() << endl;
-	cout << cf.elements[1].getString() << endl;
-	*/
-
+	Projectile proj = Projectile::fromFile("/workspace/BALLS/BALLS/io/ConfigTest.txt");
+	cout << proj.name;
 	return 0;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <exception>
 #include <string>
 #include <fstream>
 #include <vector>
@@ -25,7 +26,8 @@ class CurveReader {
         void parse(vector<double> *x, vector<double> *y) {
             ifstream ifs(this->filePath, ifstream::in);
             string line;
-            while (getline(ifs, line)) {
+            try {
+                while (getline(ifs, line)) {
                 if (line.empty()) {
                     continue;
                 }
@@ -43,6 +45,10 @@ class CurveReader {
                 x->push_back(configElement::toNumber(xs));
                 y->push_back(configElement::toNumber(ys));
             }
+            } catch(exception* e) {
+                cout << e->what();
+            }
+            
         };
 
 };
