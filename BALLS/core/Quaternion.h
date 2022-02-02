@@ -44,7 +44,7 @@ public:
 
 	// fix euler to angle assignment (this prob needs to be done to toEuelrAngles as well) (w->x, y->z) but the math works!
 	static Quaternion fromEuler(Vector3 const& eulerAngles) {
-		double cosX = cos(eulerAngles.x / 2.0); // roll (to be fixed)
+		double cosX = cos(eulerAngles.x / 2.0); // roll (to be fix)
 		double cosY = cos(eulerAngles.y / 2.0); // yaw
 		double cosZ = cos(eulerAngles.z / 2.0);  //pitch
 
