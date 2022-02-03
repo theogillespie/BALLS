@@ -2,13 +2,8 @@
 //
 
 #include "BALLS.h"
-#include "core/Quaternion.h"
-#include "core/Vector3.h"
-#include "core/Projectile.h"
-
-#include "io/Console.h"
-
-#include <stdio.h>
+#include "core/core.h"
+#include "io/io.h"
 
 int main()
 {
