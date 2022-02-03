@@ -15,7 +15,9 @@
 int main()
 {
 
+	
 	// technically executes, but values are not correct... probably a pointer issue;
-	Projectile proj = Projectile::fromFile("/workspace/BALLS/BALLS/io/ConfigTest.txt");
+	Projectile proj = Projectile::fromFile("C:\\Users\\icat7\\OneDrive\\Documents\\BALLS\\BALLS\\io\\ConfigTest.txt");
+	cout << proj.mass;
 	return 0;
 }

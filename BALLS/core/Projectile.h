@@ -55,11 +55,10 @@ public:
 		ProjectileConfigField mass("mass");
 		ProjectileConfigField cdFile("cd");
 
-		vector<ProjectileConfigField*> fields {&mass, &cdFile};
+		vector<ProjectileConfigField*> fields {&name, &mass, &cdFile};
 		ProjectileLoader pl(filepath, fields);
 
 		pl.load();
-
 		CurveReader cr(cdFile.valueS);
 		vector<double> x, y;
 		cr.parse(&x, &y);
@@ -68,8 +67,10 @@ public:
 
 		Curve drag(x, y);
 		Projectile proj(mass.valueD);
+
 		proj.drag = drag;
 		proj.name = name.valueS;
+		proj.mass = mass.valueD;
 
 		return proj;
 	};

@@ -46,19 +46,24 @@ public:
     
     void load() {
         try {
-            cr.parse();
+            this->cr.parse();
+          
         } catch(const std::exception& e) {
             cout << "Error while loading projectile configuration: " + *e.what();
         }
 
-        for(int i = 0; i < cr.elements.size(); i++) {
+ 
+        for(int i = 0; i < this->cr.elements.size(); i++) {
            configElement element = cr.elements[i];
-           bool found;
-           for(int j = 0; j < this->fields.size(); j++) {
+           bool found = false;
+           for (int j = 0; j < this->fields.size(); j++) {
                ProjectileConfigField* field = this->fields[j];
                if(element.name == field->name) {
                    if(configElement::isNumber(element.value)) {
                        field->valueD = configElement::toNumber(element.value);
+                   }
+                   else {
+                       field->valueS = element.value;
                    }
                    found = true;
                    break;

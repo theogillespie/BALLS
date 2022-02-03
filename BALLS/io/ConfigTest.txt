@@ -2,4 +2,4 @@ name=G1
 # mass of object (kg)
 mass=10
 # location of csv containing profile drag
-cd=/workspace/BALLS/BALLS/io/CurveTest.txt
+cd=C:\\Users\\icat7\\OneDrive\\Documents\\BALLS\\BALLS\\io\\CurveTest.txt

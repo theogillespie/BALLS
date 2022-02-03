@@ -98,6 +98,7 @@ public:
                 }
                 if (line.find(_ASSIGN) == string::npos) {
                     cout << ConfigParseError(this->filePath, i).what();
+                    continue;
                 }
                 
                 configElement element;
