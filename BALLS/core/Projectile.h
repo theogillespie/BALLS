@@ -5,6 +5,7 @@
 #include "Constants.h"
 #include "Logger.h"
 #include "Curve.h"
+#include "Atmosphere.h"
 #include "../io/ProjectileLoader.h"
 #include "../io/CurveReader.h"
 
@@ -84,6 +85,10 @@ public:
 	};
 
 	double altitude() {
+		if (this->position.z > MAXALT) {
+			cout << "WARNING: Projectiles Altitude exceeds supported limit (" << MAXALT << "m), results may be inaccurate";
+		}
+
 		return this->position.z;
 	};
 

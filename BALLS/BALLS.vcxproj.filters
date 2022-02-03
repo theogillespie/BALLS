@@ -24,4 +24,9 @@
       <Filter>Header Files</Filter>
     </Xsd>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="io\Console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

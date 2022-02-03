@@ -6,21 +6,16 @@
 #include "core/Vector3.h"
 #include "core/Projectile.h"
 
-#include "io/ConfigReader.h"
-#include "io/LoadingBar.h"
-#include "io/ProjectileLoader.h"
+#include "io/Console.h"
 
 #include <stdio.h>
 
 int main()
 {
 
-	Vector3 vec(90, 0, 0);
-
-	cout << "input euler angles (deg): " << vec.toString() << endl;
-	Quaternion q = Quaternion::fromEuler(vec);
-	cout << "as quat: " << q.toString() << endl;
-	cout << "converted back to euler (deg): " << q.toEulerAngles().toString();
+	Console::print("printed !");
+	Console::warn("warned !");
+	Console::error("error !");
 
 	return 0;
 }

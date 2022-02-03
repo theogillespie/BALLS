@@ -8,6 +8,8 @@
 
 using namespace std;
 
+#define MAXALT 86000
+
 // works up to ~86 KM
 class Atmosphere {
 private:
@@ -23,7 +25,7 @@ public:
 
 		double const x = Atmosphere::windDistribution(2.0, maxSpeed);
 		double const y = Atmosphere::windDistribution(2.0, maxSpeed);
-		return new Vector3(x, y, 0.0);
+		return Vector3(x, y, 0.0);
 	}
 
 	static double pressureAtAltitude(double alt) {
