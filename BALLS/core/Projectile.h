@@ -97,21 +97,23 @@ public:
 	};
 
 	static Vector3 toLocalSpace(Vector3 vec) {
-		
+		 // priority
 	};
 
 	void update() {
 
-		this->acceleration = this->forces / this->mass;
-		this->position = this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
-		this->velocity = this->acceleration * this->dt;
+		this->acceleration += this->forces / this->mass;
+		this->position += this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
+		this->velocity += this->acceleration * this->dt;
 
+		// currently broken....
 		this->angularAcceleration = this->torque / this->angularMass;
 		this->rotation = this->angularVelocity * this->dt + this->angularAcceleration * 0.5 * (this->dt * this->dt);
 		this->angularVelocity = this->angularAcceleration * this->dt;
 
 		this->torque = Vector3::zero();
 		this->forces = Vector3::zero();
+		this->acceleration = Vector3::zero();
 	};
 };
 
