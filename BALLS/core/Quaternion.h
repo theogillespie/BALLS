@@ -42,44 +42,47 @@ public:
 		return Quaternion(this->w, x, y, z);
 	}
 
-	// fix euler to angle assignment (this prob needs to be done to toEuelrAngles as well) (w->x, y->z) but the math works!
-	static Quaternion fromEuler(Vector3 const& eulerAngles) {
-		double cosX = cos(eulerAngles.y / 2.0); 
-		double cosY = cos(eulerAngles.z / 2.0); 
-		double cosZ = cos(eulerAngles.x / 2.0);  
+	// https://github.com/peregrine-developments/Orientation/blob/master/Quaternion/Quaternion.cpp
+	static Quaternion fromEuler(Vector3 eulerAngles) {
+		eulerAngles.toRad();
+		double cy = cos(eulerAngles.z / 2);
+		double cp = cos(eulerAngles.y / 2);
+		double cr = cos(eulerAngles.x / 2);
 
-		double sinX = sin(eulerAngles.y / 2.0);
-		double sinY = sin(eulerAngles.z / 2.0);
-		double sinZ = sin(eulerAngles.x / 2.0);
+		double sy = sin(eulerAngles.z / 2);
+		double sp = sin(eulerAngles.y / 2);
+		double sr = sin(eulerAngles.x / 2);
 
-		double w = cosX * cosY * cosZ + sinX * sinY * sinZ;
-		double x = cosX * cosY * sinZ - sinX * sinY * cosZ;
-		double y = cosX * cosZ * sinY + sinX * sinZ * cosY;
-		double z = cosY * cosZ * sinX - sinY * sinZ * cosX;
+		double w = cr * cp * cy + sr * sp * sy;
+		double x = sr * cp * cy - cr * sp * sy;
+		double y = cr * sp * cy + sr * cp * sy;
+		double z = cr * cp * sy - sr * sp * cy;
 
 		return Quaternion(w, x, y, z);
 	};
 
-	//THIS IS SUPER WRONG>>>>>>>>>>>>>>>>>>>>>>>>>>>> NEED TO UPATE ASSOCIATIon
+	
 	Vector3 toEulerAngles() {
-		Vector3 angles;
+		Vector3 ang;
 
-		double n1 = 2.0 * (this->w * this->x + this->y * this->z);
-		double n2 = 1.0 - (2.0 * (this->x * this->x + this->y * this->y));
-		double n3 = 2.0 * (this->w * this->y + this->x * -this->z);
-		double n4 = 2.0 * (this->w * this->z + this->x * this->y);
-		double n5 = 1.0 - (2.0 * (this->y * this->y + this->z * this->z));
+		double sinr_cosp = 2 * (this->w * this->x + this->y * this->z);
+		double cosr_cosp = 1 - (2 * (this->x * this->x + this->y * this->y));
+		ang.x = atan2(sinr_cosp, cosr_cosp);
 
-		angles.x = atan2(n4, n5);
-		if (abs(n3) >= 1.0) {
-			angles.y = copysign(HALFPI, n3);
+		double sinp = 2 * (this->w * this->y + -this->z * this->x);
+		if (abs(sinp) >= 1) {
+			ang.y = copysign(HALFPI, sinp); // return 90 if out of range
 		}
 		else {
-			angles.y = asin(n3);
+			ang.y = asin(sinp);
 		}
-		angles.z = atan2(n1, n2);
 
-		return angles;
+		double siny_cosp = 2 * (this->w * this->z + this->x * this->y);
+		double cosy_cosp = 1 - (2 * (this->y * this->y + this->z * this->z));
+		ang.z = atan2(siny_cosp, cosy_cosp);
+
+		ang.toDeg();
+		return ang;
 	}
 
 	std::string toString() {

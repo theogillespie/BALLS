@@ -15,9 +15,12 @@
 int main()
 {
 
-	
-	// technically executes, but values are not correct... probably a pointer issue;
-	Projectile proj = Projectile::fromFile("C:\\Users\\icat7\\OneDrive\\Documents\\BALLS\\BALLS\\io\\ConfigTest.txt");
-	cout << proj.mass;
+	Vector3 vec(90, 0, 0);
+
+	cout << "input euler angles (deg): " << vec.toString() << endl;
+	Quaternion q = Quaternion::fromEuler(vec);
+	cout << "as quat: " << q.toString() << endl;
+	cout << "converted back to euler (deg): " << q.toEulerAngles().toString();
+
 	return 0;
 }
