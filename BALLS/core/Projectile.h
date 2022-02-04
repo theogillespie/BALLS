@@ -112,6 +112,8 @@ public:
 
 	void update() {
 
+
+		// velocity verlet
 		this->acceleration += this->forces / this->mass;
 		this->position += this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity += this->acceleration * this->dt;

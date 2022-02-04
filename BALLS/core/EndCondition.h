@@ -2,8 +2,10 @@
 
 
 #include "Projectile.h"
+#include "Atmosphere.h"
 
 #define ENDCONDITION_NEGY 0 
+#define ENDCONDITION_MAXALT 1
 
 
 #ifndef ENDCONDITION
@@ -13,7 +15,15 @@
 
 
 class EndCondition {
-	static void evaluate(Projectile* proj) {
-
+	static bool evaluate(Projectile* proj) {
+		#if ENDCONDITION == ENDCONDITION_NEGY
+		if(proj->position.y < 0) {
+			return true;
+		}
+		#elif ENDCONDITION == ENDCONDITION_MAXALT
+		if(proj->position.y > MAXALT) {
+			return true;
+		}
+		#endif
 	}
 };

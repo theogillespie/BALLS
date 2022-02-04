@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "matplotlibcpp.h"
 
 #include<vector>
