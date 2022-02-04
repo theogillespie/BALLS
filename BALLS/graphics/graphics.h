@@ -20,7 +20,6 @@
 #define DEBUG_DRAW_IMPLEMENTATION
 using namespace dd;
 
-
 class GL {
     public:
         GLFWwindow* window;

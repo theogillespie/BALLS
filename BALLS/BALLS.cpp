@@ -8,9 +8,9 @@
 int main()
 {
 
-	Console::print("printed !");
-	Console::warn("warned !");
-	Console::error("error !");
+	Console::print("Initializing BALLS...");
+
+	Projectile projectile(1);
 
 	return 0;
 }

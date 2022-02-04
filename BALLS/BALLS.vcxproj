@@ -150,6 +150,8 @@
     </Xsd>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="core\EndCondition.h" />
+    <ClInclude Include="graphics\graph.h" />
     <ClInclude Include="io\Console.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

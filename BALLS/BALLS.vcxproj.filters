@@ -28,5 +28,11 @@
     <ClInclude Include="io\Console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\graph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="core\EndCondition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
