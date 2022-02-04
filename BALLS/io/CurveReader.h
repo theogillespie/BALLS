@@ -46,7 +46,7 @@ class CurveReader {
                 y->push_back(configElement::toNumber(ys));
             }
             } catch(exception* e) {
-                cout << e->what();
+                Console::error( e->what());
             }
             
         };

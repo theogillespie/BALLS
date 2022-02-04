@@ -12,7 +12,7 @@
 
 #ifdef _WIN32
 
-#else
+#else // linux support
 #include "../draw/debug_draw.hpp"
 
 #endif

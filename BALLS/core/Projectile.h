@@ -6,8 +6,7 @@
 #include "Logger.h"
 #include "Curve.h"
 #include "Atmosphere.h"
-#include "../io/ProjectileLoader.h"
-#include "../io/CurveReader.h"
+#include "../io/io.h"
 
 #include <vector>
 #include <cmath>
@@ -26,7 +25,8 @@ public:
 	Vector3 velocity;
 	Vector3 forces;
 
-	Vector3 rotation;
+	Vector3 eulerAngles;
+	Quaternion rotation;
 	Vector3 angularVelocity;
 	Vector3 angularAcceleration;
 	Vector3 torque;
@@ -64,8 +64,6 @@ public:
 		vector<double> x, y;
 		cr.parse(&x, &y);
 
-		cout << "parsed curve";
-
 		Curve drag(x, y);
 		Projectile proj(mass.valueD);
 
@@ -86,9 +84,8 @@ public:
 
 	double altitude() {
 		if (this->position.z > MAXALT) {
-			cout << "WARNING: Projectiles Altitude exceeds supported limit (" << MAXALT << "m), results may be inaccurate";
+			Console::error("WARNING: Projectiles Altitude exceeds supported limit (" + to_string(MAXALT) + "m), results may be inaccurate");
 		}
-
 		return this->position.z;
 	};
 
@@ -96,9 +93,22 @@ public:
 		this->forces += force;
 	};
 
-	static Vector3 toLocalSpace(Vector3 vec) {
-		 // priority
+	// accounts for rotation
+	void addRelativeForce(Vector3 const& force) {
+		this->forces += this->toLocalSpace(force);
+	}
+
+	Vector3 toLocalSpace(Vector3 vec) {
+		Quaternion q(0, vec.x, vec.y, vec.z);
+		Quaternion n = this->rotation * q * this->rotation.conjugate();
+		return Vector3(n.x, n.y, n.z);
 	};
+
+	Vector3 toGlobalSpace(Vector3 vec) {
+		Quaternion q(0, vec.x, vec.y, vec.z);
+		Quaternion n = this->rotation.conjugate() * q * this->rotation;
+		return Vector3(n.x, n.y, n.z);
+	}
 
 	void update() {
 
@@ -107,9 +117,14 @@ public:
 		this->velocity += this->acceleration * this->dt;
 
 		// currently broken....
+
+		/*
 		this->angularAcceleration = this->torque / this->angularMass;
 		this->rotation = this->angularVelocity * this->dt + this->angularAcceleration * 0.5 * (this->dt * this->dt);
 		this->angularVelocity = this->angularAcceleration * this->dt;
+		*/
+
+		this->eulerAngles = this->rotation.toEulerAngles();
 
 		this->torque = Vector3::zero();
 		this->forces = Vector3::zero();

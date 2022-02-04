@@ -49,7 +49,7 @@ public:
             this->cr.parse();
           
         } catch(const std::exception& e) {
-            cout << "Error while loading projectile configuration: " + *e.what();
+           Console::error("Error while loading projectile configuration: " + *e.what());
         }
 
  
@@ -70,7 +70,7 @@ public:
                }
            }
            if(!found) {
-               cout << FieldMissingError(element.name).what();
+               Console::error(FieldMissingError(element.name).what());
            }
         }
 

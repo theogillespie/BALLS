@@ -97,7 +97,7 @@ public:
                     continue;
                 }
                 if (line.find(_ASSIGN) == string::npos) {
-                    cout << ConfigParseError(this->filePath, i).what();
+                    Console::error(ConfigParseError(this->filePath, i).what());
                     continue;
                 }
                 
@@ -111,7 +111,7 @@ public:
                 this->elements.push_back(element);
 
             } catch (const std::exception& e) {
-                cout << ConfigParseError(this->filePath, i).what();
+                Console::error(ConfigParseError(this->filePath, i).what());
             };
         }
         
