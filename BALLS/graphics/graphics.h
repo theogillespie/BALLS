@@ -1,85 +1,66 @@
 #pragma once
 
-#include <cstddef>
+
+#include "../core/core.h"
+
+#ifdef _WIN32
+namespace Raylib {
+	#include "raylib.h"
+}
+#else // linux support
+#endif
+
 #define FPS 30
 #define WIDTH 800   
 #define HEIGHT 450
 
-#include "../core/core.h"
-#include "../io/io.h"
+class Graphics {
 
-#include <GLFW/glfw3.h>
+	Raylib::Camera3D camera;
 
-#ifdef _WIN32
+	Vector3 basePosition = Vector3::zero();
 
-#else // linux support
-#include "../draw/debug_draw.hpp"
-
-#endif
-
-#define DEBUG_DRAW_IMPLEMENTATION
-using namespace dd;
-
-class GL {
-    public:
-        GLFWwindow* window;
-
-        GL() {};
-
-        void init() {
-            if (!glfwInit()) {
-                Console::error("Failed to initalize graphics (fatal)");
-                exit(3);
-            }
-            this->window = glfwCreateWindow(WIDTH, HEIGHT, "BALListic Simulator", NULL, NULL);
-            if (!window)
-            {
-                glfwTerminate();
-                Console::error("Failed to initalize window (fatal)");
-                exit(3);
-            }
-            glfwMakeContextCurrent(window);
-            Console::print("Done!");
-
-            glfwTerminate();
-        };
-
-        //draws a singular frame
-        void draw() {
-
-            glClear(GL_COLOR_BUFFER_BIT);
-            /* Swap front and back buffers */
-            glfwSwapBuffers(window);
-            /* Poll for and process events */
-            glfwPollEvents();
-        };
-
-        void end() {
-            glfwTerminate();
-        };
-};
-
-class DebugRenderInterface : RenderInterface {
 public:
-    GL* graphics;
-    DebugRenderInterface() {
-        this->graphics = new GL();
-    }
+	Graphics() {};
+	~Graphics() {};
 
-    void beginDraw() override {
-        this->graphics->init();
-    };
+	void init(int width = WIDTH, int height = HEIGHT) {
+		Raylib::InitWindow(width, height, "window");
 
-    void endDraw() override {
-        this->graphics->end();
-    };
+		this->camera = { 0 };
+		this->camera.position = (Raylib::Vector3){ 10.0f, 10.0f, 10.0f };
+		this->camera.target = (Raylib::Vector3){ 0.0f, 0.0f, 0.0f };
+		this->camera.up = (Raylib::Vector3){ 0.0f, 1.0f, 0.0f };
+		this->camera.fovy = 45.0f;                                // Camera field-of-view Y
+		this->camera.projection = Raylib::CAMERA_PERSPECTIVE;
+		Raylib::SetCameraMode(this->camera, Raylib::CAMERA_FREE);
 
-    void drawPointList(const DrawVertex * points, int count, bool depthEnabled) override {
-        if(points == nullptr && count <= 0 && count > DEBUG_DRAW_VERTEX_BUFFER_SIZE) {
-            return;
-        }
-        
+		Raylib::SetTargetFPS(FPS);
+	};
 
-    };
-    void drawLineList(const DrawVertex * lines, int count, bool depthEnabled) override;
+
+	void draw() {
+		if (Raylib::WindowShouldClose()) {
+			Raylib::CloseWindow();
+			exit(1);
+		}
+
+		Raylib::UpdateCamera(&this->camera);
+		Raylib::BeginDrawing();
+
+		Raylib::ClearBackground(Raylib::RAYWHITE);
+
+		Raylib::BeginMode3D(this->camera);
+
+
+		Raylib::Vector3 position = (Raylib::Vector3){ this->basePosition.x, this->basePosition.y, this->basePosition.z };
+		Raylib::DrawCube(position, 1.0f, 1.0f, 1.0f, Raylib::GRAY);
+		Raylib::DrawCubeWires(position, 1.0f, 1.0f, 1.0f, Raylib::BLACK);
+
+		Raylib::DrawGrid(5, 1.0f);
+
+		Raylib::EndMode3D();
+
+		Raylib::EndDrawing();
+	}
 };
