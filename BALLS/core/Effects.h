@@ -1,7 +1,9 @@
 #pragma once
 
-#include "Logger.h"
 #include "core.h"
+#include "../solvers/solvers.h"
+
+class DragSolver;
 
 class Effect {
 public:
@@ -11,7 +13,9 @@ public:
 
 	Effect(Projectile* proj) {
 		this->projectile = proj;
-	}
+	};
+
+    virtual void preload(); // where things like drag curve generation begin
 
 	virtual void update();
 };
@@ -30,5 +34,23 @@ public:
 	};
 };
 
+class Drag : Effect {
+    public: 
+        Curve dragCurve;
+        DragSolver* dragSolver;
 
-//MCDRAG
+        Drag(Projectile* proj, DragSolver* solver): Effect(proj) {
+            this->logger = new Logger("Drag Force", &this->projectile->position);
+            this->dragSolver = solver;
+        };
+
+        void preload() override {
+            Console::print("Generating Drag Curve...");
+            this->dragCurve = this->dragSolver->generateCurve();
+        };
+
+        void update() override {
+            double dragForce = this->dragCurve.getValue(this->projectile->speed());
+            this->projectile->addRelativeForce(Vector3(1, 0, 0) * dragForce);
+        };
+};

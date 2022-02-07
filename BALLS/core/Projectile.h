@@ -89,6 +89,14 @@ public:
 		return this->position.z;
 	};
 
+	double speed() {
+		return this->velocity.magnitude();
+	};
+
+	double getMach() {
+		return this->speed() / Atmosphere::machAtAltitude(this->altitude());
+	}
+
 	void addForce(Vector3 const& force) {
 		this->forces += force;
 	};

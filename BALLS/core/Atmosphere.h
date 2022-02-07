@@ -25,7 +25,7 @@ public:
 
 		double const x = Atmosphere::windDistribution(2.0, maxSpeed);
 		double const y = Atmosphere::windDistribution(2.0, maxSpeed);
-		return Vector3(x, y, 0.0);
+		return Vector3(x, 0, y);
 	}
 
 	static double pressureAtAltitude(double alt) {
@@ -33,11 +33,16 @@ public:
 		if (alt >= 11000 && alt <= 20000) {
 			return Pb * exp((-G * M * (alt-h) / (R * Tb)));
 		}
-
 		return Pb * pow((Tb + Lb * (alt - h)) / Tb, (-G * M) / (R * Lb));
 	}
 
 	static double densityAtAltitude(double alt) {
 		return Pb * pow(Tb / (Tb + Lb * (alt-h)), 1 + ((G * M) / (R * Lb)));
+	}
+
+	static double machAtAltitude(double alt) {
+		// i kinda made this up, but i think its somewhat right
+		double T = Tb / (Tb + Lb * (alt-h));
+		return Vs * pow((T / Tb), 0.5);
 	}
 };

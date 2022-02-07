@@ -7,6 +7,7 @@
 #define Lb -0.0065 // standard temp lapse rate (K/m)
 #define h 0.0 // sea level height (m)
 #define re 6371.009 // mean radius of earth
+#define Vs 643.855 // speed of sound
 
 // math things
 #define PI 3.141592653589793238462643383279502884L
