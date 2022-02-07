@@ -2,15 +2,17 @@
 //
 
 #include "BALLS.h"
-#include "core/core.h"
-#include "io/io.h"
+#include "graphics/graphics.h"
 
 int main()
 {
 
-	Console::print("Initializing BALLS...");
+	Graphics graphics;
+	graphics.init();
 
-	Projectile projectile(1);
+	while (true) {
+		graphics.draw();
+	}
 
 	return 0;
 }

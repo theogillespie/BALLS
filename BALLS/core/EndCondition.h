@@ -7,9 +7,8 @@
 #define ENDCONDITION_NEGY 0 
 #define ENDCONDITION_MAXALT 1
 
-
 #ifndef ENDCONDITION
-#warning Missing a Specified End Condition, using default
+//#warning Missing a Specified End Condition, using default
 #define ENDCONDITION ENDCONDITION_NEGY
 #endif // !ENDCONDITION
 

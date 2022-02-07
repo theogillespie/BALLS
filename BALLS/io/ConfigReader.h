@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <iostream>
 
+#include "../io/Console.h"
+
 using namespace std;
 
 // configuration format:

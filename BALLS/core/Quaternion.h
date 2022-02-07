@@ -19,6 +19,8 @@ public:
 		this->z = _z;
 	};
 
+	Quaternion() {};
+
 	double magnitude() {
 		return sqrt(this->w * this->w + this->x * this->x + this->y * this->y + this->z * this->z);
 	};
