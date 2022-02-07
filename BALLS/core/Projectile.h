@@ -134,30 +134,3 @@ public:
 	};
 };
 
-class Effect {
-public:
-
-	Projectile* projectile;
-	Logger* logger;
-
-	Effect() {}
-
-	virtual void update();
-};
-
-class Gravity : Effect {
-
-public:
-
-	Gravity(Projectile proj) {
-		this->projectile = &proj;
-		Logger log("Gravity Acceleration", &this->projectile->acceleration.y);
-		this->logger = &log;
-	};
-
-	void update() {
-		double alt = this->projectile->altitude();
-		this->projectile->acceleration.y += G * pow((re / re + alt), 2.0);
-		this->logger->update();
-	};
-};

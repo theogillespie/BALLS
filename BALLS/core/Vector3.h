@@ -42,6 +42,10 @@ public:
 		return sqrt((this->x * this->x) + (this->y * this->y) + (this->z * this->z));
 	};
 
+	Vector3 endPosition() {
+		return (this * this->magnitude());
+	};
+
 	Vector3* invert() {
 		this->x = -this->x;
 		this->y = -this->y;

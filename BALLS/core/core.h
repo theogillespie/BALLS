@@ -9,3 +9,4 @@
 #include "Vector3.h"
 #include "Quaternion.h"
 #include "EndCondition.h"
+#include "Effects.h"
