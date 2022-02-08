@@ -43,7 +43,7 @@ public:
 	};
 
 	Vector3 endPosition() {
-		return (this * this->magnitude());
+		return (Vector3(this->x, this->y, this->z) * this->magnitude());
 	};
 
 	Vector3* invert() {

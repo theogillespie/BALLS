@@ -3,17 +3,25 @@
 
 #include "../core/core.h"
 
-#ifdef _WIN32
 namespace Raylib {
+#ifdef _WIN32
 	#include "raylib.h"
 	#include "rlgl.h"
-}
 #else // linux support
+#include "../raylib/src/raylib.h"
 #endif
+}
 
 #define FPS 30
 #define WIDTH 800   
 #define HEIGHT 450
+
+class GraphicsDrawer {
+public:
+	virtual void draw3d();
+	virtual void draw2d();
+	virtual void end();
+};
 
 class Graphics {
 
@@ -63,12 +71,6 @@ public:
 	}
 };
 
-class GraphicsDrawer {
-public:
-	virtual void draw3d();
-	virtual void draw2d();
-	virtual void end();
-};
 
 class ProjectileVisualizer: GraphicsDrawer {
 public:
