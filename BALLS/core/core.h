@@ -10,3 +10,4 @@
 #include "Quaternion.h"
 #include "EndCondition.h"
 #include "Effects.h"
+#include "Simulation.h"

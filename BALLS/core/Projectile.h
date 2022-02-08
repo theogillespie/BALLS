@@ -1,18 +1,13 @@
 #pragma once
 
-#include "Vector3.h"
-#include "Quaternion.h"
-#include "Constants.h"
-#include "Logger.h"
-#include "Curve.h"
-#include "Atmosphere.h"
+#include "core.h"
 #include "../io/io.h"
 
+#include <cstdint>
 #include <vector>
 #include <cmath>
 #include <string>
 
-class Effect;
 
 class Projectile {
 
@@ -120,6 +115,9 @@ public:
 
 	void update() {
 
+		for(uint8_t i = 0; i < this->effects.size(); i++) {
+			this->effects[i].update();
+		}
 
 		// velocity verlet
 		this->acceleration += this->forces / this->mass;

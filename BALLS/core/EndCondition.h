@@ -1,8 +1,8 @@
 #pragma once
 
 
-#include "Projectile.h"
-#include "Atmosphere.h"
+
+#include "core.h"
 
 #define ENDCONDITION_NEGY 0 
 #define ENDCONDITION_MAXALT 1
@@ -14,6 +14,7 @@
 
 
 class EndCondition {
+	public:
 	static bool evaluate(Projectile* proj) {
 		#if ENDCONDITION == ENDCONDITION_NEGY
 		if(proj->position.y < 0) {
