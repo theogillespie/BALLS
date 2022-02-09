@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Effects.h"
+#include "Projectile.h"
 
-
-#include "core.h"
+class Projectile;
 
 #define ENDCONDITION_NEGY 0 
 #define ENDCONDITION_MAXALT 1

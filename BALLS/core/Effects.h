@@ -4,6 +4,7 @@
 #include "../solvers/solvers.h"
 
 class DragSolver;
+class Projectile;
 
 class Effect {
 public:

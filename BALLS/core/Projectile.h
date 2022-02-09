@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Quaternion.h"
 #include "core.h"
 #include "../io/io.h"
 
@@ -8,6 +9,7 @@
 #include <cmath>
 #include <string>
 
+class Effect;
 
 class Projectile {
 

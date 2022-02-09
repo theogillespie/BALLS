@@ -3,6 +3,8 @@
 
 #include "../core/core.h"
 
+class Projectile;
+
 class DragSolver {
 public:
     Projectile* projectile;
