@@ -3,6 +3,7 @@
 #include "Quaternion.h"
 #include "core.h"
 #include "../io/io.h"
+#include "../solvers/solvers.h"
 
 #include <cstdint>
 #include <vector>
@@ -12,7 +13,6 @@
 class Effect;
 
 class Projectile {
-
 public:
 
 	string name;
@@ -39,6 +39,8 @@ public:
 	
 	
 	Projectile(double mass, double dt=0.001, Vector3 const& initalPosition=Vector3::zero()) {
+		this->position = initalPosition;
+		this->dt = dt;
 		this->position = initalPosition;
 	};
 
@@ -116,16 +118,15 @@ public:
 	}
 
 	void update() {
-
+		this->elaspedTime += dt;
 		for(uint8_t i = 0; i < this->effects.size(); i++) {
-			this->effects[i].update();
+			//this->effects[i]->update();
 		}
 
-		// velocity verlet
-		this->acceleration += this->forces / this->mass;
+		this->acceleration = this->forces / this->mass;
+		this->acceleration.y += -9.8;
 		this->position += this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity += this->acceleration * this->dt;
-
 		// currently broken....
 
 		/*
@@ -136,9 +137,61 @@ public:
 
 		this->eulerAngles = this->rotation.toEulerAngles();
 
-		this->torque = Vector3::zero();
-		this->forces = Vector3::zero();
-		this->acceleration = Vector3::zero();
+		this->torque = Vector3(0,0,0);
+		this->forces = Vector3(0,0,0);
 	};
 };
+
+
+
+class Effect {
+public:
+
+	Projectile* projectile;
+	Logger* logger;
+
+	Effect(Projectile* proj) {
+		this->projectile = proj;
+	};
+
+    virtual void preload(); // where things like drag curve generation begin
+
+	virtual void update();
+};
+
+class Gravity : Effect {
+
+public:
+	Gravity(Projectile* proj): Effect(proj) {
+		this->logger = new Logger("Gravity Acceleration", &this->projectile->acceleration.y);
+	};
+
+	void update() override {
+		double alt = this->projectile->altitude();
+		this->projectile->acceleration.y += G * pow((re / re + alt), 2.0);
+		this->logger->update();
+	};
+};
+
+class Drag : Effect {
+    public: 
+        Curve dragCurve;
+        DragSolver* dragSolver;
+
+        Drag(Projectile* proj, DragSolver* solver): Effect(proj) {
+            this->logger = new Logger("Drag Force", &this->projectile->position);
+            this->dragSolver = solver;
+        };
+
+        void preload() override {
+            Console::print("Generating Drag Curve...");
+            this->dragCurve = this->dragSolver->generateCurve();
+        };
+
+        void update() override {
+            double dragForce = this->dragCurve.getValue(this->projectile->speed());
+            this->projectile->addRelativeForce(Vector3(1, 0, 0) * dragForce);
+        };
+};
+
 

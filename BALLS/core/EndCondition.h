@@ -1,9 +1,6 @@
 #pragma once
 
-#include "Effects.h"
 #include "Projectile.h"
-
-class Projectile;
 
 #define ENDCONDITION_NEGY 0 
 #define ENDCONDITION_MAXALT 1
@@ -12,7 +9,6 @@ class Projectile;
 //#warning Missing a Specified End Condition, using default
 #define ENDCONDITION ENDCONDITION_NEGY
 #endif // !ENDCONDITION
-
 
 class EndCondition {
 	public:

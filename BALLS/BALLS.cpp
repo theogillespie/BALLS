@@ -2,8 +2,11 @@
 //
 
 #include "BALLS.h"
+#include "core/core.h"
 
 int main()
 {
-	return 0;
+	Projectile* projectile = Simulation::run();
+	Console::print("Done:");
+	Console::print(projectile->position.toString());
 }
