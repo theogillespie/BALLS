@@ -3,10 +3,19 @@
 
 #include "BALLS.h"
 #include "core/core.h"
+#include "graphics/graphics.h"
 
 int main()
 {
-	Projectile* projectile = Simulation::run();
-	Console::print("Done:");
-	Console::print(projectile->position.toString());
+	
+	/*Graphics graphics;
+	graphics.init();
+
+	while (true)
+	{
+		graphics.draw();
+	}*/
+	//works fine.... but recieving the obj from sim is sad
+	Simulation::run();
+	
 }

@@ -41,7 +41,7 @@ public:
 	Projectile(double mass, double dt=0.001, Vector3 const& initalPosition=Vector3::zero()) {
 		this->position = initalPosition;
 		this->dt = dt;
-		this->position = initalPosition;
+		this->mass = mass;
 	};
 
 	Projectile() {};
@@ -124,9 +124,10 @@ public:
 		}
 
 		this->acceleration = this->forces / this->mass;
-		this->acceleration.y += -9.8;
+		this->acceleration.y += -G;
 		this->position += this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity += this->acceleration * this->dt;
+
 		// currently broken....
 
 		/*

@@ -51,6 +51,11 @@ public:
 	};
 
 
+	void addDrawer(GraphicsDrawer drawer) {
+		this->drawers.push_back(drawer);
+	}
+
+
 	void draw() {
 		if (Raylib::WindowShouldClose()) {
 			Raylib::CloseWindow();
@@ -62,10 +67,16 @@ public:
 		Raylib::ClearBackground(Raylib::RAYWHITE);
 
 		Raylib::BeginMode3D(this->camera);
+		/*
 		for (int i = 0; i < this->drawers.size(); i++) {
 			this->drawers[i].draw3d();
 			this->drawers[i].draw2d();
-		}
+		}*/
+		Raylib::Vector3 position = { 0, 0, 0 };
+		Raylib::DrawCube(position, 1.0f, 1.0f, 1.0f, Raylib::GRAY);
+		Raylib::DrawCubeWires(position, 1.0f, 1.0f, 1.0f, Raylib::BLACK);
+		Raylib::DrawGrid(5, 1.0f);
+
 		Raylib::EndMode3D();
 		Raylib::EndDrawing();
 	}

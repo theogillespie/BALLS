@@ -13,14 +13,9 @@
 class EndCondition {
 	public:
 	static bool evaluate(Projectile* proj) {
-		#if ENDCONDITION == ENDCONDITION_NEGY
 		if(proj->position.y < 0) {
 			return true;
 		}
-		#elif ENDCONDITION == ENDCONDITION_MAXALT
-		if(proj->position.y > MAXALT) {
-			return true;
-		}
-		#endif
+		return false;
 	}
 };

@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "Atmosphere.h"
 #include "Constants.h"
 #include "Curve.h"

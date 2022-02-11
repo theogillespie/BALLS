@@ -12,12 +12,12 @@ class Simulation {
 public:
     static Projectile* run() {
         Projectile projectile(1, 0.001, Vector3(0, 10, 0));
-
+    
         while(!EndCondition::evaluate(&projectile)) {
-            Console::print(projectile.position.toString());
-           
             projectile.update();
         }
+        Console::print("done sim:");
+        Console::print(projectile.position.toString());
         return &projectile;
     }
 };

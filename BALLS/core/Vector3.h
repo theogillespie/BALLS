@@ -9,7 +9,7 @@
 
 class Vector3 {
 public:
-	double x, y, z;
+	double x, y, z = 0;
 	Vector3(double _x, double _y, double _z) {
 		this->x = _x;
 		this->y = _y;
@@ -97,16 +97,18 @@ public:
 		return Vector3(this->x + n, this->y + n, this->z + n);
 	};
 
-	Vector3& operator += (Vector3 const& vec) {
+	Vector3 operator += (Vector3 const& vec) {
 		this->x += vec.x;
 		this->y += vec.y;
 		this->z += vec.z;
+		return *this;
 	};
 
 	Vector3 operator += (double const& n) {
 		this->x += n;
 		this->y += n;
 		this->z += n;
+		return *this;
 	};
 
 	Vector3 operator - (Vector3 const& vec) {
