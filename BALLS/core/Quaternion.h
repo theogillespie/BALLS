@@ -44,6 +44,18 @@ public:
 		return Quaternion(this->w, x, y, z);
 	}
 
+	static Quaternion fromAxisAngle(Vector3 axis, double angle) {
+		double a = sin(angle / 2);
+		Quaternion q(
+			cos(angle / 2.0),
+			axis.x * a,
+			axis.y * a,
+			axis.z * a
+		);
+
+		return q;
+	}
+
 	// https://github.com/peregrine-developments/Orientation/blob/master/Quaternion/Quaternion.cpp
 	static Quaternion fromEuler(Vector3 eulerAngles) {
 		eulerAngles.toRad();

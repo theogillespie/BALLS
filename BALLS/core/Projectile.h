@@ -21,13 +21,14 @@ public:
 	Vector3 position;
 	Vector3 velocity;
 	Vector3 forces;
+	Vector3 constantForces;
 
 	Vector3 eulerAngles;
 	Quaternion rotation;
 	Vector3 angularVelocity;
 	Vector3 angularAcceleration;
 	Vector3 torque;
-	Vector3 angularMass;
+	Vector3 momentOfInertia;
 
 	Curve drag;
 
@@ -42,6 +43,8 @@ public:
 		this->position = initalPosition;
 		this->dt = dt;
 		this->mass = mass;
+		
+		this->momentOfInertia = Vector3(0, 0, 0);
 	};
 
 	Projectile() {};
@@ -105,6 +108,10 @@ public:
 		this->forces += this->toLocalSpace(force);
 	}
 
+	void addConstantForce(Vector3 const& force) {
+		this->constantForces += force;
+	}
+
 	Vector3 toLocalSpace(Vector3 vec) {
 		Quaternion q(0, vec.x, vec.y, vec.z);
 		Quaternion n = this->rotation * q * this->rotation.conjugate();
@@ -123,19 +130,18 @@ public:
 			//this->effects[i]->update();
 		}
 
+		this->forces += this->constantForces;
+
 		this->acceleration = this->forces / this->mass;
 		this->acceleration.y += -G;
 		this->position += this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity += this->acceleration * this->dt;
 
-		// currently broken....
-
-		/*
-		this->angularAcceleration = this->torque / this->angularMass;
-		this->rotation = this->angularVelocity * this->dt + this->angularAcceleration * 0.5 * (this->dt * this->dt);
+		this->angularAcceleration = this->torque / this->momentOfInertia;
 		this->angularVelocity = this->angularAcceleration * this->dt;
-		*/
-
+		float angularVelocityMagnitude = this->angularVelocity.magnitude();
+		this->rotation *= Quaternion::fromAxisAngle(this->angularVelocity / angularVelocityMagnitude, angularVelocityMagnitude * this->dt);
+		
 		this->eulerAngles = this->rotation.toEulerAngles();
 
 		this->torque = Vector3(0,0,0);
