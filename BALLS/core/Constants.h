@@ -1,3 +1,10 @@
+// math things
+#define PI 3.141592653589793238462643383279502884L
+#define THETA PI*2UL
+#define HALFPI PI/2UL
+#define DEGTORAD PI/180UL
+#define RADTODEG 180UL/PI
+#define INTOM 1/39.37
 
 #define G 9.80665 //m/s
 #define R 8.3144598 // J/(mol/K)
@@ -8,10 +15,6 @@
 #define h 0.0 // sea level height (m)
 #define re 6371.009 // mean radius of earth
 #define Vs 643.855 // speed of sound
+#define OMEGA 465 // rotation speed of earth m/s
+#define LAT 90  * DEGTORAD
 
-// math things
-#define PI 3.141592653589793238462643383279502884L
-#define THETA PI*2UL
-#define HALFPI PI/2UL
-#define DEGTORAD PI/180UL
-#define RADTODEG 180UL/PI

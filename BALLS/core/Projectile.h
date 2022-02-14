@@ -12,12 +12,25 @@
 
 class Effect;
 
+struct ProjectileDimensions {
+	double rifilingTwist = 1; // rifiling twist (in/turn)
+	double caliber = .44; // caliber (inches)
+	double length = 1; // inch
+	double mass = 1; // grains!!!!
+	double i = length / mass;
+};
+
 class Projectile {
 public:
 
 	string name;
+	ProjectileDimensions dimensions;
 
 	Vector3 acceleration;
+
+	Vector3 initialPosition;
+	Vector3 initialVelocity;
+
 	Vector3 position;
 	Vector3 velocity;
 	Vector3 forces;
@@ -30,17 +43,21 @@ public:
 	Vector3 torque;
 	Vector3 momentOfInertia;
 
+	Vector3 oldCoriolis;
+	Vector3 oldSpinDrift;
+
 	Curve drag;
 
 	double dt;
 	double elaspedTime;
+	double gravity;
 	double mass;
-
-	std::vector<Effect*> effects = std::vector<Effect*>();
+	double direction;
 	
 	
-	Projectile(double mass, double dt=0.001, Vector3 const& initalPosition=Vector3::zero()) {
-		this->position = initalPosition;
+	Projectile(double mass, double dt=0.001, Vector3 const& initPosition=Vector3::zero()) {
+		this->initialPosition = initPosition;
+		this->position = this->initialPosition;
 		this->dt = dt;
 		this->mass = mass;
 		
@@ -49,9 +66,7 @@ public:
 
 	Projectile() {};
 
-	~Projectile() {
-		this->effects.clear();
-	};
+	~Projectile() {};
 
 	static Projectile fromFile(std::string filepath) {
 		ProjectileConfigField name("name");
@@ -76,9 +91,6 @@ public:
 		return proj;
 	};
 
-	void addEffect(Effect* effect) {
-		this->effects.push_back(effect);
-	};
 
 	double kineticEnergy() {
 		return (this->velocity * this->velocity).magnitude() * .5 * this->mass;
@@ -124,16 +136,58 @@ public:
 		return Vector3(n.x, n.y, n.z);
 	}
 
+	void applyGravity() {
+		this->gravity = G * pow((re / re + this->altitude()), 2.0);
+	}
+
+	void applyDrag() {
+
+	}
+
+	void applyCoriolis() {
+		double distance = Vector3::distance(this->initialPosition, this->position);
+		double projectileDrop = this->initialPosition.y - this->position.y;
+
+		double xDeflection = (OMEGA * (distance * distance) * sin(LAT)) / this->speed();
+		double yDeflection = (1 - 2 * (OMEGA * this->initialPosition.magnitude() / this->gravity) * cos(LAT) * sin(direction));
+		yDeflection = (yDeflection * projectileDrop) - projectileDrop;
+
+		Vector3 current = Vector3(xDeflection, yDeflection, 0);
+		current -= this->oldCoriolis;
+		this->oldCoriolis = current;
+		
+		this->position += current;
+	}
+
+	void applyEoetvoes() {
+		double centripedalAccel = 2 * OMEGA * (this->initialVelocity.magnitude() / this->gravity) * cos(LAT) * sin(this->direction);
+		this->acceleration += Vector3(0, -centripedalAccel, 0);
+	};
+
+	double calculateGyroStability() {
+		// goal: convert grains/in^3 from    V
+		double p = Atmosphere::densityAtAltitude(this->altitude());
+		double p1 = (8 * PI) / (p * pow(this->dimensions.rifilingTwist, 2) * pow(this->dimensions.caliber, 5) * .57 * this->dimensions.i);
+		double p2 = (this->dimensions.mass * pow(this->dimensions.caliber, 2)) / (4.83 * (1 + pow(this->dimensions.i, 2)));
+		return p1 * p2;
+	};
+
+	double applySpinDrift() {
+		double drift = 1.25 * (calculateGyroStability() + 1.2) * pow(this->elaspedTime, 1.83);
+		Vector3 spinDrift = Vector3(drift, 0, 0);
+		spinDrift -= this->oldSpinDrift;
+		this->oldSpinDrift = spinDrift;
+
+		this->position += spinDrift;
+	}
+
 	void update() {
 		this->elaspedTime += dt;
-		for(uint8_t i = 0; i < this->effects.size(); i++) {
-			//this->effects[i]->update();
-		}
 
 		this->forces += this->constantForces;
 
 		this->acceleration = this->forces / this->mass;
-		this->acceleration.y += -G;
+		this->acceleration.y += -this->gravity;
 		this->position += this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity += this->acceleration * this->dt;
 
@@ -143,62 +197,11 @@ public:
 		this->rotation *= Quaternion::fromAxisAngle(this->angularVelocity / angularVelocityMagnitude, angularVelocityMagnitude * this->dt);
 		
 		this->eulerAngles = this->rotation.toEulerAngles();
+		direction = atan2(this->velocity.z, this->velocity.x);
 
 		this->torque = Vector3(0,0,0);
 		this->forces = Vector3(0,0,0);
 	};
-};
-
-
-
-class Effect {
-public:
-
-	Projectile* projectile;
-	Logger* logger;
-
-	Effect(Projectile* proj) {
-		this->projectile = proj;
-	};
-
-    virtual void preload(); // where things like drag curve generation begin
-
-	virtual void update();
-};
-
-class Gravity : Effect {
-
-public:
-	Gravity(Projectile* proj): Effect(proj) {
-		this->logger = new Logger("Gravity Acceleration", &this->projectile->acceleration.y);
-	};
-
-	void update() override {
-		double alt = this->projectile->altitude();
-		this->projectile->acceleration.y += G * pow((re / re + alt), 2.0);
-		this->logger->update();
-	};
-};
-
-class Drag : Effect {
-    public: 
-        Curve dragCurve;
-        DragSolver* dragSolver;
-
-        Drag(Projectile* proj, DragSolver* solver): Effect(proj) {
-            this->logger = new Logger("Drag Force", &this->projectile->position);
-            this->dragSolver = solver;
-        };
-
-        void preload() override {
-            Console::print("Generating Drag Curve...");
-            this->dragCurve = this->dragSolver->generateCurve();
-        };
-
-        void update() override {
-            double dragForce = this->dragCurve.getValue(this->projectile->speed());
-            this->projectile->addRelativeForce(Vector3(1, 0, 0) * dragForce);
-        };
 };
 
 
