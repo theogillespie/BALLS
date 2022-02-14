@@ -165,19 +165,17 @@ public:
 	};
 
 	double calculateGyroStability() {
-		// goal: convert grains/in^3 from    V
-		double p = Atmosphere::densityAtAltitude(this->altitude());
+		double p = Atmosphere::densityAtAltitude(this->altitude()) / 3.954;
 		double p1 = (8 * PI) / (p * pow(this->dimensions.rifilingTwist, 2) * pow(this->dimensions.caliber, 5) * .57 * this->dimensions.i);
 		double p2 = (this->dimensions.mass * pow(this->dimensions.caliber, 2)) / (4.83 * (1 + pow(this->dimensions.i, 2)));
 		return p1 * p2;
 	};
 
-	double applySpinDrift() {
+	void applySpinDrift() {
 		double drift = 1.25 * (calculateGyroStability() + 1.2) * pow(this->elaspedTime, 1.83);
 		Vector3 spinDrift = Vector3(drift, 0, 0);
 		spinDrift -= this->oldSpinDrift;
 		this->oldSpinDrift = spinDrift;
-
 		this->position += spinDrift;
 	}
 
@@ -186,10 +184,18 @@ public:
 
 		this->forces += this->constantForces;
 
+		//this->applyGravity();
+		
+		cout << this->constantForces.toString() << endl;
+
 		this->acceleration = this->forces / this->mass;
-		this->acceleration.y += -this->gravity;
+		this->acceleration.y += -G;
 		this->position += this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity += this->acceleration * this->dt;
+
+		//this->applyCoriolis();
+		//this->applyEoetvoes();
+		//this->applySpinDrift();
 
 		this->angularAcceleration = this->torque / this->momentOfInertia;
 		this->angularVelocity = this->angularAcceleration * this->dt;
@@ -197,10 +203,11 @@ public:
 		this->rotation *= Quaternion::fromAxisAngle(this->angularVelocity / angularVelocityMagnitude, angularVelocityMagnitude * this->dt);
 		
 		this->eulerAngles = this->rotation.toEulerAngles();
-		direction = atan2(this->velocity.z, this->velocity.x);
+		this->direction = atan2(this->velocity.z, this->velocity.x);
 
 		this->torque = Vector3(0,0,0);
 		this->forces = Vector3(0,0,0);
+		this->acceleration = Vector3(0, 0, 0);
 	};
 };
 

@@ -123,6 +123,7 @@ public:
 		this->x -= vec.x;
 		this->y -= vec.y;
 		this->z -= vec.z;
+		return *this;
 	};
 
 	Vector3 operator -= (double const& n) {

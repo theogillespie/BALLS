@@ -5,8 +5,6 @@
 
 #define ENDCONDITION ENDCONDITION_NEGY
 
-class Projectile;
-
 class Simulation {
 
 public:
@@ -16,6 +14,7 @@ public:
         while(!EndCondition::evaluate(&projectile)) {
             projectile.update();
         }
+
         Console::print("done sim:");
         Console::print(projectile.position.toString());
         return &projectile;

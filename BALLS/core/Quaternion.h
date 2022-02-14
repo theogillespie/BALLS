@@ -202,6 +202,8 @@ public:
 		this->x = this->w * q.w + this->x * q.x + this->y * q.y - this->z * q.z;
 		this->y = this->w * q.w - this->x * q.x + this->y * q.y + this->z * q.z;
 		this->z = this->w * q.w + this->x * q.x - this->y * q.y + this->z * q.z;
+
+		return *this;
 	}
 
 	Quaternion operator *= (double const& n) {
