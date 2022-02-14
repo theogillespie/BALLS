@@ -9,7 +9,9 @@
 
 class Vector3 {
 public:
-	double x, y, z = 0;
+	double x = 0;
+	double y = 0;
+	double z = 0;
 	Vector3(double _x, double _y, double _z) {
 		this->x = _x;
 		this->y = _y;

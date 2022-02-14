@@ -137,7 +137,12 @@ public:
 	}
 
 	void applyGravity() {
-		this->gravity = G * pow((re / re + this->altitude()), 2.0);
+		if(this->altitude() <= 0) {
+			this->acceleration.y += -G;
+		}
+		else {
+			this->acceleration.y += -(G * pow((re / re + this->altitude()), 2.0));
+		}
 	}
 
 	void applyDrag() {
@@ -181,19 +186,15 @@ public:
 
 	void update() {
 		this->elaspedTime += dt;
-
 		this->forces += this->constantForces;
 
-		//this->applyGravity();
-		
-		cout << this->constantForces.toString() << endl;
-
 		this->acceleration = this->forces / this->mass;
-		this->acceleration.y += -G;
+		this->applyGravity();
+
 		this->position += this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity += this->acceleration * this->dt;
 
-		//this->applyCoriolis();
+		//this->applyCoriolis(); // causes -nan(ind) wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwooooooooooooooooooo
 		//this->applyEoetvoes();
 		//this->applySpinDrift();
 
