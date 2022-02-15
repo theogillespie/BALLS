@@ -15,6 +15,6 @@
 #define h 0.0 // sea level height (m)
 #define re 6371.009 // mean radius of earth
 #define Vs 643.855 // speed of sound
-#define OMEGA 465 // rotation speed of earth m/s
-#define LAT 90  * DEGTORAD
+#define OMEGA 0.000072921159// rotation speed of earth idrk where i got this number
+#define LAT -84 * DEGTORAD
 

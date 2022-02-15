@@ -12,11 +12,12 @@
 
 class Effect;
 
+// 5.56×45mm
 struct ProjectileDimensions {
-	double rifilingTwist = 1; // rifiling twist (in/turn)
-	double caliber = .44; // caliber (inches)
-	double length = 1; // inch
-	double mass = 1; // grains!!!!
+	double rifilingTwist = 0.14285714285; // rifiling twist (in/turn)
+	double caliber = .223; // caliber (inches)
+	double length = .5; // inch
+	double mass = 62; // grains!!!!
 	double i = length / mass;
 };
 
@@ -49,7 +50,7 @@ public:
 	Curve drag;
 
 	double dt;
-	double elaspedTime;
+	double elaspedTime = 0;
 	double gravity;
 	double mass;
 	double direction;
@@ -154,7 +155,7 @@ public:
 		double projectileDrop = this->initialPosition.y - this->position.y;
 
 		double xDeflection = (OMEGA * (distance * distance) * sin(LAT)) / this->speed();
-		double yDeflection = (1 - 2 * (OMEGA * this->initialPosition.magnitude() / this->gravity) * cos(LAT) * sin(direction));
+		double yDeflection = (1 - 2 * (OMEGA * this->initialVelocity.magnitude() / this->gravity) * cos(LAT) * sin(direction));
 		yDeflection = (yDeflection * projectileDrop) - projectileDrop;
 
 		Vector3 current = Vector3(xDeflection, yDeflection, 0);
@@ -177,7 +178,9 @@ public:
 	};
 
 	void applySpinDrift() {
-		double drift = 1.25 * (calculateGyroStability() + 1.2) * pow(this->elaspedTime, 1.83);
+		double s = calculateGyroStability();
+		double drift = 1.25 * (s + 1.2) * pow(this->elaspedTime, 1.83);
+		drift /= 39.37; // in to m
 		Vector3 spinDrift = Vector3(drift, 0, 0);
 		spinDrift -= this->oldSpinDrift;
 		this->oldSpinDrift = spinDrift;
@@ -194,9 +197,9 @@ public:
 		this->position += this->velocity * this->dt + this->acceleration * 0.5 * (this->dt * this->dt);
 		this->velocity += this->acceleration * this->dt;
 
-		//this->applyCoriolis(); // causes -nan(ind) wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwooooooooooooooooooo
-		//this->applyEoetvoes();
-		//this->applySpinDrift();
+		this->applyCoriolis(); 
+		this->applyEoetvoes();
+		//this->applySpinDrift(); // gives wacky ass numbers
 
 		this->angularAcceleration = this->torque / this->momentOfInertia;
 		this->angularVelocity = this->angularAcceleration * this->dt;
