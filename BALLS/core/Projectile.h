@@ -199,7 +199,7 @@ public:
 
 		this->applyCoriolis(); 
 		this->applyEoetvoes();
-		//this->applySpinDrift(); // gives wacky ass numbers
+		this->applySpinDrift(); // gives wacky ass numbers
 
 		this->angularAcceleration = this->torque / this->momentOfInertia;
 		this->angularVelocity = this->angularAcceleration * this->dt;

@@ -2,14 +2,12 @@
 
 #include "Constants.h"
 #include "Vector3.h"
-
 #include <cmath>
 #include <random>
 
 using namespace std;
 
 #define MAXALT 86000
-
 // works up to ~86 KM
 class Atmosphere {
 private:
@@ -28,6 +26,7 @@ public:
 		return Vector3(x, 0, y);
 	}
 
+	// in pa
 	static double pressureAtAltitude(double alt) {
 		//Accounts for stratosphere's constant temp
 		if (alt >= 11000 && alt <= 20000) {
@@ -36,10 +35,12 @@ public:
 		return Pb * pow((Tb + Lb * (alt - h)) / Tb, (-G * M) / (R * Lb));
 	}
 
+	// wrong
 	static double densityAtAltitude(double alt) {
-		return Pb * pow(Tb / (Tb + Lb * (alt-h)), 1 + ((G * M) / (R * Lb)));
+		return Pb * pow((Tb) / (Tb + Lb * (alt-h)), 1 + ((G * M) / (R * Lb)));
 	}
 
+	// wrong
 	static double machAtAltitude(double alt) {
 		// i kinda made this up, but i think its somewhat right
 		double T = Tb / (Tb + Lb * (alt-h));

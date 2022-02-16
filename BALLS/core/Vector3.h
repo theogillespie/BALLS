@@ -35,6 +35,10 @@ public:
 		return Vector3(0, 0, 0);
 	};
 
+	static Vector3 forward() {
+		return Vector3(0, 0, 1);
+	}
+
 	Vector3 normal() {
 		double const m = this->magnitude();
 		return Vector3(this->x / m, this->y / m, this->x / m);

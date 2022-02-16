@@ -17,6 +17,7 @@ public:
 
         Console::print("done sim:");
         Console::print(projectile.position.toString());
+        Console::print(to_string(projectile.elaspedTime));
         return &projectile;
     }
 };
